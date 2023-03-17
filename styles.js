@@ -86,6 +86,9 @@ const styles = {
     minWidth: 80,
     borderRadius: 8,
     margin: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontWeight: 'bold'
   },
   btnSelect: {
     backgroundColor: colorBS,

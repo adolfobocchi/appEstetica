@@ -11,6 +11,7 @@ import Resultado from './src/components/ResultadoScreen.js';
 import styles from './styles.js';
 
 import * as Icon from "react-native-feather";
+import LinearGradient from 'react-native-linear-gradient';
 
 function App() {
   const [pergunta, setPergunta] = useState('');
@@ -96,29 +97,36 @@ function App() {
     if (encerrar) {
       setQuestionario(false);
       respostas.sort();
+      console.log(respostas);
+      let achou = false;
       Resultados.forEach(function (item, i) {
         let gabarito = item.gabarito;
-        let achou =
+        if(!achou) {
+          achou =
           respostas.length == gabarito.length &&
           respostas.every(function (element, index) {
             return element === gabarito[index];
           });
-        if (achou) {
-          //mostra msg
-          setPele(item.resultado);
+          if (achou) {
+            //mostra msg
+            setPele(item.resultado);
+          }
         }
       });
+      if(!achou) {
+        setPele('Não foi possivel determinar!\n Refaça o questionario!')
+      }
     }
   }
 
   /*muda de resposta a cada clique para prox ou voltar */
   function selecionaPergunta() {
-    setPergunta(perguntas[count]);
-    if (respostas.includes(count)) {
+    setPergunta(perguntas[count]); //seleciona a pergunta
+    if (respostas.includes(count)) { //se pergunta selecionada teve resposta sim
       setSelect(true);
       setSelectNao(false);
       setRespondeu(true);
-    } else if (respostan.includes(count)) {
+    } else if (respostan.includes(count)) { //se pergunta selecionada teve resposta nao
       setRespondeu(true);
       setSelect(false);
       setSelectNao(true);
@@ -157,6 +165,7 @@ function App() {
 
   /* controla estado da reposta e incrementa o contador */
   function handleRespSim() {
+    
     const index = respostan.findIndex((id) => id === count);
     if (index !== -1) {
       setRespostan([
@@ -202,7 +211,7 @@ function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ height: 'auto', minHeight: '100%' }}>
         {boasVindas &&
           <BoasVindas boasVindasClique={boasVindaClique} />
         }
@@ -210,13 +219,13 @@ function App() {
           <Start startClique={startClique} dados={dados} changeDados={handleChange} />
         }
         {questionario &&
-          <>
+          <LinearGradient colors={['#F79FFF', '#8094FF', '#8AD2FF']} style={{flex: 1}}>
             <View style={styles.navArea}>
               <TouchableOpacity style={styles.btnSmall} onPress={handleVoltar}>
-                <Icon.ChevronsLeft stroke="red" width={32} height={32} />
+                <Icon.ChevronsLeft stroke="#FFF" width={32} height={32} />
               </TouchableOpacity>
               <TouchableOpacity style={styles.btnSmall} onPress={handleProx}>
-                <Icon.ChevronsRight stroke="red" width={32} height={32} />
+                <Icon.ChevronsRight stroke="#FFF" width={32} height={32} />
               </TouchableOpacity>
             </View>
             <View style={styles.imgArea}>
@@ -226,17 +235,17 @@ function App() {
               <Text style={styles.perguntaText}>{pergunta}</Text>
               <View style={styles.buttonArea}>
                 <TouchableOpacity style={[styles.btnSmall, select && styles.btnSelect]} onPress={handleRespSim}>
-                  <Icon.CheckCircle stroke="red" width={32} height={32} />
+                  <Icon.CheckCircle stroke="#FFF" width={32} height={32} />
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.btnSmall, selectNao && styles.btnNaoSelect]} onPress={handleRespNao}>
-                  <Icon.XCircle stroke="red" width={32} height={32} />
+                  <Icon.XCircle stroke="#FFF" width={32} height={32} />
                 </TouchableOpacity>
               </View>
             </View>
-          </>
+          </LinearGradient>
         }
         {encerrar &&
-          <Resultado resultado={pele} refazerClique={refazerClique} />
+          <Resultado resultado={pele} dados={dados} refazerClique={refazerClique} />
         }
       </ScrollView>
     </SafeAreaView>
