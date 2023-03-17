@@ -135,7 +135,7 @@ function App() {
       setSelect(false);
       setSelectNao(false);
     }
-    if (count === 8) {
+    if (count === 12) {
       setBtnProx('Resultado')
     }
   }
