@@ -18,7 +18,7 @@ const StartScreen = ({ startClique, dados, changeDados }) => {
       id='email'
       keyboardType='email-address'
       style={[styles.input, styles.textoInput]}
-      placeholder="informe sue e-mail"
+      placeholder="informe seu e-mail"
       value={dados.email}
       onChangeText={(text) => changeDados(text,'email')}
     />

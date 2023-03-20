@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 import Perguntas from './src/models/Perguntas.js';
 import Resultados from './src/models/Resultados.js';
@@ -59,21 +59,31 @@ function App() {
   }, [count]);
 
   function reset() {
-    setboasVindas(true);
-    setStart(false);
-    setQuestionario(false);
-    setEncerrar(false);
-    setDados({ ...dados, email: '', nome: '', idade: '' });
-    setCount(0);
-    setPergunta(Perguntas[0]);
-    setRespostas([]);
-    setRespostan([]);
-    setSelect(false);
-    setSelectNao(false);
-    setBtnVoltar('Sair');
-    setRespondeu(false);
-    setBtnProx('Prox');
-    setBtnVoltar('Sair');
+    Alert.alert('Refazer', 'Tem certeza que deseja refazer?', [
+      {
+        text: 'Não',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'Sim', onPress: () => {
+        setboasVindas(true);
+        setStart(false);
+        setQuestionario(false);
+        setEncerrar(false);
+        setDados({ ...dados, email: '', nome: '', idade: '' });
+        setCount(0);
+        setPergunta(Perguntas[0]);
+        setRespostas([]);
+        setRespostan([]);
+        setSelect(false);
+        setSelectNao(false);
+        setBtnVoltar('Sair');
+        setRespondeu(false);
+        setBtnProx('Prox');
+        setBtnVoltar('Sair');
+      }},
+    ]);
+    
   }
 
   /* trocando de telas */
@@ -97,7 +107,6 @@ function App() {
     if (encerrar) {
       setQuestionario(false);
       respostas.sort();
-      console.log(respostas);
       let achou = false;
       Resultados.forEach(function (item, i) {
         let gabarito = item.gabarito;
